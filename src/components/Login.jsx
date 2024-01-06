@@ -1,9 +1,8 @@
-import serverDetails from '../serverDetails'
 import { useState } from 'react'
 import { Form, Button } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom';
 
-const loginUrl = serverDetails.api_url + "users/login"
+const loginUrl = import.meta.env.VITE_API_URL + "users/login"
 
 export default function Login() {
   const [errors, setErrors] = useState(null)
@@ -35,7 +34,7 @@ export default function Login() {
 
         // Save the token in local storage
         localStorage.setItem('jwtToken', token)
-        console.log(token)
+        //console.log(token)
 
         // Navigate to /dashboard after successful login
         navigate('/dashboard');
