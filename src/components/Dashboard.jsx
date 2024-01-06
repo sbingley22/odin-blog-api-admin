@@ -7,6 +7,7 @@ const dashboardUrl = import.meta.env.VITE_API_URL + 'users/dashboard'
 const Dashboard = () => {
   const [data, setData] = useState(null)
   const [error, setError] = useState(null)
+  const [reload, setReload] = useState(false)
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -34,7 +35,7 @@ const Dashboard = () => {
     }).catch((error) => {
       setError(error.message)
     })
-  },[])
+  },[reload])
 
   const publishBlog = async (id, published) => {
     // Tell server to publish / unpublish the blog
@@ -62,10 +63,10 @@ const Dashboard = () => {
 
       if (response.status == 200){
         // reload after successful update
-        window.location.reload()
+        setReload(!reload)
       } else if (response.status == 404){
         console.error("blog doesn't exist")
-        window.location.reload()
+        setReload(!reload)
       } else if (response.status == 400){
         console.error("Cant authenticate token")
         navigate('/');

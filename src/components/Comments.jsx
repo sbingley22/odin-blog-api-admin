@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react"
 import { useParams, useNavigate  } from "react-router-dom"
-import serverDetails from "../serverDetails"
 import { Button } from "react-bootstrap"
 
 export default function Comments() {
   const [comments, setComments] = useState(null)
   const [error, setError] = useState(null)
   const { blogid } = useParams()
+  const [reload, setReload] = useState(false)
   const navigate = useNavigate()
 
-  const commentUrl = serverDetails.api_url + 'users/dashboard/' + blogid.slice(1) + "/comments"
+  const commentUrl = import.meta.env.VITE_API_URL + 'users/dashboard/' + blogid.slice(1) + "/comments"
 
   useEffect(()=>{
     const token = localStorage.getItem('jwtToken')
@@ -38,7 +38,7 @@ export default function Comments() {
     }).catch((error) => {
       setError(error.message)
     })
-  },[])
+  },[reload])
 
   const gotoDashboard = () => {
     navigate('/dashboard')
@@ -64,7 +64,7 @@ export default function Comments() {
 
       if (response.status == 200){
         // Reload page
-        window.location.reload()
+        setReload(!reload)
       } else {
         console.error("failed to delete comment")
       }
